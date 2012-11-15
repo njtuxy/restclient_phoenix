@@ -10,8 +10,12 @@ module MyRestClientTest
        response = RestClient.get("http://phoenix-staging.tunnel.wonderhill.com/api/bases/1169/buildings/124242/?player_id=1048&token=oLZk4wxMNcGDkPFui9taExDTNEIrfwXOdIqcNzLgjJ%2b9mpfhjzEHjiIgWPXzWELQ3T0EwrqJaTyZa3zRrl2sMA%3d%3d")
        puts response.body
     end
-    
-    
+       
+       
+    def query_existing_base
+      response = RestClient.get("http://phoenix-staging.tunnel.wonderhill.com/api/bases/1169/?player_id=1048&token=oLZk4wxMNcGDkPFui9taExDTNEIrfwXOdIqcNzLgjJ%2b9mpfhjzEHjiIgWPXzWELQ3T0EwrqJaTyZa3zRrl2sMA%3d%3d")
+      puts response.body
+    end      
     
   end
  end
@@ -19,4 +23,4 @@ module MyRestClientTest
 
 # 
 t = MyRestClientTest::Test.new
-t.query_existing_building
+t.query_existing_groups
