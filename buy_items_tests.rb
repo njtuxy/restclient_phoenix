@@ -2,13 +2,16 @@ require_relative 'rest_client_util'
 
 describe "Buy one 10K Hexium item" do
   
+ 
   before :all do
     @t = RestClientUtil.new.buy_one_10k_hexium
   end
 
+context "blabla" do
   it "The transaction should be successufull" do
     @t[:item_status].should eq(true)
   end
+end
   
   it "The item's display name should be still 10K Hexium" do
     @t[:item_name].should eq("10K Hexium")
@@ -21,6 +24,7 @@ describe "Buy one 10K Hexium item" do
   it "The cost for the item should be 1" do
     @t[:item_cost].should eq(1)
   end
+
 
 end
 

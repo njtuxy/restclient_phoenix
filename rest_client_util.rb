@@ -57,21 +57,29 @@ class RestClientUtil
   #FuelDepot
   #top-left-corner = {-2200, -2200} 
   
-  def build_new_buildings(x,y, building_type)
-    response = RestClient.post "#{@phoenix_api_url}/bases/#{@base_id}/buildings/?player_id=#{@player_id}&token=#{@player_token}&building%5bx%5d=#{x}&building%5by%5d=#{y}&building%5bbuilding_type%5d=Buildings%3a%3a#{building_type}&instant=true&_method=POST", {:params => {}}
-    p response.body
+  def build_buildings_at(x,y, building_type)
+    response = RestClient .post "#{@phoenix_api_url}/bases/#{@base_id}/buildings/?player_id=#{@player_id}&token=#{@player_token}&building%5bx%5d=#{x}&building%5by%5d=#{y}&building%5bbuilding_type%5d=Buildings%3a%3a#{building_type}&instant=true&_method=POST", {:params => {}}    # p response.body
+    response.body
+    # building_info = JSON.load(response.body)['building']
+    # p response.body
+    # p building_info['id']
+    # {:building_id  => building_info['id'], :building_type => building_info['type']}
+  end
+  
+  def build_buildings_on_empty_spot(x,y, building_type)
+    response = build_buildings_at(x,y,building_type)
     building_info = JSON.load(response.body)['building']
+    p response.body
+    p building_info['id']
     {:building_id  => building_info['id'], :building_type => building_info['type']}
   end
   
-  def build_new_hexium_refinery(x,y)
-    build_new_buildings(x, y, "FuelDepot")
+  def build_new_buliding_on_non_empty_spot(x,y,building_type)
+    response = build_buildings_at(x,y,building_type) 
+    building_info = JSON.load(response.body)["success"]
+    p building_info
   end
-  
-  def build_new_barracks(x,y)
-    build_new_buildings(x,y,"Barracks")
-  end
-  
+      
   def get_individual_building_info(building_id)
      response = RestClient.get("#{@phoenix_api_url}/bases/#{@base_id}/buildings/#{building_id}/?player_id=#{@player_id}&token=#{@player_token}")
      puts response.body
@@ -86,9 +94,7 @@ class RestClientUtil
   end
   
   def destory_building(building_id)
-    response = RestClient.delete "#{@phoenix_api_url}/bases/#{@base_id}/buildings/#{building_id}?player_id=#{@player_id}&token=#{@player_token}&_method=DELETE" , {:params => {}}
-    p response.body
-    JSON.load(response.body)['success']
+    response = RestClient.delete "#{@phoenix_api_url}/bases/#{@base_id}/buildings/#{building_id}?player_id=#{@player_id}&token=#{@player_token}&_method=DELETE" , {:params => {}}    # p response.body
   end
   
   def move_building(building_id, x, y)
